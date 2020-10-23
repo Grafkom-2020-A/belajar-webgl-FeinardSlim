@@ -2,16 +2,22 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Belajar_webGL</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belajar WebGL</title>
 </head>
 
 <body onload="main()">
-    <canvas id="myCanvas" width="800" height="600">
-        Canvas HTML not Suported
+    <canvas id="myCanvas" width="1337" height="720">
+      Peramban tidak mendukung kanvas HTML5
     </canvas>
     <script type="text/javascript" src="main.js"></script>
+    <script id="vertexShaderCode" type="notjs">
+        attribute vec2 a_Position; attribute vec3 a_Color; varying vec3 v_Color; void main() { v_Color = a_Color; gl_Position = vec4(a_Position, 0.0, 1.0); }
+    </script>
+    <script id="fragmentShaderCode" type="notjs">
+        precision mediump float; varying vec3 v_Color; void main() { gl_FragColor = vec4(v_Color, 1.0); }
+    </script>
 </body>
 
 </html>
