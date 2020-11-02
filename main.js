@@ -6,45 +6,12 @@ function main() {
     /**
      * A (-0.5, 0.5); B (-0.5, -0.5); C (0.5, -0.5); D (0.5, 0.5)
      */
-    var vertices = [
-        //Huruf
-        -0.9, 0.9, 1.0, 0.0, 0.0, // Titik A 
-        -0.9, -0.9, 0.0, 1.0, 0.0, // Titik B
-        -0.5, 0.9, 0.0, 0.0, 1.0, // Titik C
-        -0.5, -0.9, 1.0, 1.0, 1.0, // Titik D
-
-        //titik 0
-        //outer border
-        0.2, 0.9, 1.0, 1.0, 1.0,
-        0.7, 0.9, 1.0, 0.0, 1.0,
-        0.7, 0.1, 1.0, 1.0, 0.0,
-        0.2, 0.1, 0.0, 1.0, 1.0,
-
-        //inner border
-        0.3, 0.8, 1.0, 0.0, 0.0,
-        0.6, 0.8, 1.0, 0.0, 1.0,
-        0.6, 0.2, 1.0, 1.0, 0.0,
-        0.3, 0.2, 1.0, 1.0, 1.0,
-
-        //titik 8
-        //outer border
-        0.2, -0.9, 0.0, 0.0, 1.0,
-        0.2, -0.0, 0.0, 1.0, 0.0,
-        0.7, -0.0, 0.0, 1.0, 1.0,
-        0.7, -0.9, 1.0, 0.0, 0.0,
-
-        // inner border 1
-        0.3, -0.1, 1.0, 0.5, 1.0,
-        0.3, -0.4, 1.0, 1.0, 0.5,
-        0.6, -0.4, 0.5, 1.0, 1.0,
-        0.6, -0.1, 1.0, 0.5, 0.5,
-
-        // inner border 2
-        0.3, -0.5, 0.5, 1.0, 0.5,
-        0.3, -0.8, 0.5, 0.5, 1.0,
-        0.6, -0.8, 1.0, 0.5, 0,
-        0.6, -0.5, 0.5, 1.0, 0
-
+    var vertices = [-0.5, 0.5, 1.0, 0.0, 0.0, // Titik A 
+        -0.5, -0.5, 1.0, 0.0, 0.0, // Titik B
+        0.5, -0.5, 1.0, 0.0, 0.0, // Titik C
+        0.5, -0.5, 0.0, 0.0, 1.0, // Titik C
+        0.5, 0.5, 0.0, 0.0, 1.0, // Titik D
+        -0.5, 0.5, 0.0, 0.0, 1.0 // Titik A 
     ];
 
     var vertexBuffer = gl.createBuffer();
@@ -90,21 +57,31 @@ function main() {
     gl.enableVertexAttribArray(aPosition);
     gl.enableVertexAttribArray(aColor);
 
-    gl.clearColor(0.0, 0.0, 0.0, 0.8);
-    gl.clear(gl.COLOR_BUFFER_BIT);
     gl.viewport(100, 0, canvas.height, canvas.height);
 
-    var primitive = gl.TRIANGLE_STRIP;
-    var offset = 0; // Titik Penggambaran
-    var count = 4; // Jumlah verteks yang akan digambar
-    gl.drawArrays(primitive, offset, count);
+    var primitive = gl.TRIANGLES;
+    var offset = 0;
+    var count = 6; // Jumlah verteks yang akan digambar
 
-    var i = 0;
-    while (i != 5) {
-        i++;
-        primitive = gl.LINE_LOOP;
-        offset += 4; // Titik Penggambaran
-        count = 4; // Jumlah verteks yang akan digambar
+    var dx = 0;
+    var dy = 0;
+    var dz = 0;
+    var uDx = gl.getUniformLocation(shaderProgram, 'dx');
+    var uDy = gl.getUniformLocation(shaderProgram, 'dy');
+    var uDz = gl.getUniformLocation(shaderProgram, 'dz');
+
+
+    function render() {
+        dx += 0.001;
+        dy += 0.001;
+        dz += 0.001;
+        gl.uniform1f(uDx, dx);
+        gl.uniform1f(uDy, dy);
+        gl.uniform1f(uDz, dz);
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
         gl.drawArrays(primitive, offset, count);
+        requestAnimationFrame(render);
     }
+    requestAnimationFrame(render);
 }
